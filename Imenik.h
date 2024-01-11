@@ -4,20 +4,22 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 class Imenik{
 	private:
-    	std::vector<Kontakt> kontakti;
+    	std::vector<std::unique_ptr<Kontakt>> kontakti;
 	public:
+	    void prikaziMeni();
     	void dodajKontakt(const Kontakt& kontakt);
     	void obrisiKontakt(const std::string& brojTelefona);
-    	void sortirajKontakte();
     	Kontakt traziKontakt(const std::string& brojTelefona)const;
-    	void grupniKontakti();
-    	void urediKontakt(const std::string& brojTelefona, const Kontakt& uredjeniKontakt);
     	void ispisSvihKontakata()const;
+        void urediKontakt(const std::string& brojTelefona, const Kontakt& uredjeniKontakt);
     	std::vector<Kontakt> filtrirajKontaktePoTipu(TipKontakta tip)const;
-    	void ispisiNapomenu()const;
+    	void sortirajKontakte();
+    	void sacuvajKontakteUDatoteku(const std::string& imeDatoteke);
+    	void azurirajDatoteku(const std::string& imeDatoteke);
+    	void ucitajKontakteIzDatoteke(const std::string& imeDatoteke);
 };
-
 #endif
