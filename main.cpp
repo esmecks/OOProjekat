@@ -6,14 +6,6 @@ int main(){
 
     Imenik imenik;
 
-    Kontakt kontakt1("Suljo", "Zmaj", "064-923-71/30", "Prve Zenicke Brigade", TipKontakta::Licni);
-    Kontakt kontakt2("Haso", "Hasic", "060-654-32/10", "Mejdandzik", TipKontakta::Poslovni);
-    Kontakt kontakt3("Fata", "Bivsa", "062-657-732", "Potok", TipKontakta::Licni);
-
-    imenik.dodajKontakt(kontakt1);
-    imenik.dodajKontakt(kontakt2);
-    imenik.dodajKontakt(kontakt3);
-
     int izbor = 0;
     while(izbor != 11){
         imenik.prikaziMeni();
@@ -149,27 +141,20 @@ int main(){
             break;
             }
             case 7: {
-                /*imenik.sortirajKontakte();
-                imenik.ispisSvihKontakata();*/
-
-
             std::string ulaznaDatoteka = "imenik.txt";
             std::string izlaznaDatoteka = "sortirani_imenik.txt";
-
-
-          //  imenik.ucitajIzDatoteke(ulaznaDatoteka);
-
-
-          //  imenik.sortirajKontakteIPisiUDatoteku(izlaznaDatoteka);
-
+            imenik.ucitajIzDatoteke(ulaznaDatoteka);
+            imenik.sortirajKontakteIPisiUDatoteku(izlaznaDatoteka);
+            std::cout << "Sortirani kontakti su spremljeni u datoteku: "<<izlaznaDatoteka<< std::endl;
+            break;
             }
-            case 8: {
+            /*case 8: {
                 std::cout << "Unesite ime datoteke za spremanje kontakata: ";
                 std::string imeDatoteke;
                 std::cin >> imeDatoteke;
                 imenik.sacuvajKontakteUDatoteku(imeDatoteke);
                 break;
-             }
+             }*/
             case 9: {
                 std::string imeDatoteke;
                 std::cout << "Unesite ime datoteke za azuriranje: ";

@@ -6,6 +6,8 @@
 #include<sstream>
 #include <iomanip>
 #include"Imenik.h"
+#include"TipKontakta.h"
+
 
 void Imenik::prikaziMeni(){
     std::cout << "-------------------Menu--------------------\n";
@@ -104,7 +106,7 @@ void Imenik::obrisiKontaktIzDatoteke(const std::string& ime, const std::string& 
         std::rename("imenik_temp.txt", "imenik.txt");
 
 }
-/*
+
 void Imenik::ucitajIzDatoteke(const std::string& datoteka) {
     std::ifstream ulaz(datoteka);
     if (!ulaz.is_open()) {
@@ -146,12 +148,27 @@ void Imenik::ucitajIzDatoteke(const std::string& datoteka) {
             tipKontakta = linija.substr(14);
         }
 
-        // Kreiranje instance klase Kontakt i dodavanje u vektor
-        Kontakt kontakt(ime, prezime, broj, adresa, tipKontakta);
-        kontakti.push_back(std::make_unique<Kontakt>(kontakt));
-    }
+        // Učitavanje tipa kontakta
+        std::getline(ulaz, linija);
+        if (linija.find("Tip kontakta: ") != std::string::npos) {
+            tipKontakta = linija.substr(14);
+        }
 
-    ulaz.close();
+       TipKontakta tip;
+       if (tipKontakta == "Poslovni") {
+        tip = TipKontakta::Poslovni;
+       } else if (tipKontakta == "Licni") {
+        tip = TipKontakta::Licni;
+       } else if (tipKontakta == "Ostalo") {
+        tip = TipKontakta::Ostalo;
+       } else {
+        tip = TipKontakta::Ostalo;
+       }
+
+       Kontakt kontakt(ime, prezime, broj, adresa, tip);
+       kontakti.push_back(std::make_unique<Kontakt>(kontakt));
+       }
+       ulaz.close();
 }
 
 void Imenik::sortirajKontakteIPisiUDatoteku(const std::string& izlaznaDatoteka) {
@@ -172,23 +189,22 @@ void Imenik::sortirajKontakteIPisiUDatoteku(const std::string& izlaznaDatoteka) 
             izlaznaDatotekaStream << "------------------------------\n";
         }
         izlaznaDatotekaStream.close();
-        std::cout << "Sortirani kontakti su spremljeni u datoteku: " << std::endl;
     } else {
         std::cerr << "Nije moguće otvoriti izlaznu datoteku za pisanje." << std::endl;
     }
 }
-*/
+
 void Imenik::obrisiKontakt(const std::string& brojTelefona){
     kontakti.erase(std::remove_if(kontakti.begin(), kontakti.end(), [brojTelefona](const std::unique_ptr<Kontakt>& kontakt_ptr){
         return kontakt_ptr->dajBrojTelefona() == brojTelefona; }),
         kontakti.end());
 }
 
-void Imenik::sortirajKontakte(){
+/*void Imenik::sortirajKontakte(){
     std::sort(kontakti.begin(), kontakti.end(), [](const std::unique_ptr<Kontakt>& a, const std::unique_ptr<Kontakt>& b){
         return a->dajPrezime() < b->dajPrezime();
     });
-}
+}*/
 
 Kontakt Imenik::traziKontakt(const std::string& brojTelefona) const{
     auto it=std::find_if(kontakti.begin(), kontakti.end(), [brojTelefona](const std::unique_ptr<Kontakt>& ptr){

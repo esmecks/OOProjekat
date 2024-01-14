@@ -14,17 +14,6 @@ void Kontakt::ispisiKontakt() const{
     std::cout<<"Ime: "<<ime<<" "<<prezime<<"\n";
     std::cout<<"Telefon: "<<brojTelefona<<"\n";
     std::cout<<"Adresa: "<<adresa<<"\n";
-    std::cout<<"Tip: ";
-    switch(tip){
-        case TipKontakta::Poslovni:
-            std::cout<<"Poslovni\n";
-            break;
-        case TipKontakta::Licni:
-            std::cout<<"Licni\n";
-            break;
-        case TipKontakta::Ostalo:
-            std::cout<<"Ostalo\n";
-            break;
-    }
+    std::cout<<"Tip: "<<tip<<"\n";
     std::cout<<"-------------------------\n";
 }
