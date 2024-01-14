@@ -37,17 +37,25 @@ int main(){
                 tip = static_cast<TipKontakta>(tipUnos);
 
                 Kontakt noviKontakt(ime, prezime, brojTelefona, adresa, tip);
-                imenik.dodajKontakt(noviKontakt);
+                //imenik.dodajKontakt(noviKontakt);
+                imenik.dodajKontaktUTextDatoteku(noviKontakt);
 
-                std::cout << "Kontakt je uspjesno dodan.\n";
+                std::cout << "Kontakt je uspjesno dodan.\n\n";
                 break;
             }
             case 2: {
-                std::string brojTelefona;
-                std::cout << "Unesite broj telefona za brisanje kontakta: ";
+                std::string brojTelefona,ime,prezime;
+               /* std::cout << "Unesite broj telefona za brisanje kontakta: ";
                 std::cin >> brojTelefona;
                 imenik.obrisiKontakt(brojTelefona);
-                std::cout << "Kontakt je uspjesno obrisan.\n";
+
+                break;*/
+                std::cout<<"Unesite ime:";
+                std::cin>>ime;
+                std::cout<<"Unesite ime:";
+                std::cin>>prezime;
+                imenik.obrisiKontaktIzDatoteke(ime,prezime);
+                std::cout << "Kontakt je uspjesno obrisan.\n\n";
                 break;
             }
             case 3: {
@@ -66,41 +74,65 @@ int main(){
                 break;
             }
             case 4: {
-                imenik.ispisSvihKontakata();
+                imenik.ispisSvihKontakata("imenik.txt");
                 break;
             }
 
             case 5: {
-                std::string brojTelefona;
-                std::cout << "Unesite broj telefona kontakta koji zelite urediti: ";
-                std::cin >> brojTelefona;
 
-                Kontakt nadjeniKontakt = imenik.traziKontakt(brojTelefona);
-                if (nadjeniKontakt.dajBrojTelefona() != "") {
-                std::string ime, prezime, noviBrojTelefona, adresa;
-                TipKontakta tip;
+                Imenik imenik;
 
+                // Unos informacija od korisnika
+                std::string staroIme, staroPrezime;
+                std::cout << "Unesite ime kontakta koje zelite urediti: ";
+                std::cin >> staroIme;
+
+                std::cout << "Unesite prezime kontakta koje zelite urediti: ";
+                std::cin >> staroPrezime;
+
+                // Unos novih podataka od korisnika
+                std::string novoIme, novoPrezime, noviBroj, novaAdresa;
                 std::cout << "Unesite novo ime: ";
-                std::cin >> ime;
+                std::cin >> novoIme;
+
                 std::cout << "Unesite novo prezime: ";
-                std::cin >> prezime;
+                std::cin >> novoPrezime;
+
                 std::cout << "Unesite novi broj telefona: ";
-                std::cin >> noviBrojTelefona;
+                std::cin >> noviBroj;
+
                 std::cout << "Unesite novu adresu: ";
-                std::cin >> adresa;
+                std::cin.ignore();
+                std::getline(std::cin, novaAdresa);
+
+
                 std::cout << "Unesite novi tip kontakta (0 - Poslovni, 1 - Licni, 2 - Ostalo): ";
-                int tipUnos;
-                std::cin >> tipUnos;
-                tip = static_cast<TipKontakta>(tipUnos);
+                int tipKontaktaInt;
+                std::cin >> tipKontaktaInt;
 
-                Kontakt uredjeniKontakt(ime, prezime, noviBrojTelefona, adresa, tip);
+                TipKontakta noviTipKontakta;
+                switch (tipKontaktaInt) {
+                    case 0:
+                        noviTipKontakta = TipKontakta::Poslovni;
+                        break;
+                    case 1:
+                        noviTipKontakta = TipKontakta::Licni;
+                        break;
+                    case 2:
+                        noviTipKontakta = TipKontakta::Ostalo;
+                        break;
 
-                imenik.urediKontakt(brojTelefona, uredjeniKontakt);
-                std::cout << "Kontakt je uspjesno uredjen.\n";
-              }
-              else {
-                    std::cout << "Kontakt koji zelite urediti nije pronadjen.\n";
-              }
+                    default:
+                        std::cerr << "Neispravan unos tipa kontakta. Postavljen je na Ostalo." << std::endl;
+                        noviTipKontakta = TipKontakta::Ostalo;
+                        break;
+                }
+
+                Kontakt noviPodaci(novoIme, novoPrezime, noviBroj, novaAdresa, noviTipKontakta);
+
+                imenik.urediKontaktUDatoteci(staroIme, staroPrezime, noviPodaci);
+
+
               break;
             }
             case 6: {
@@ -117,8 +149,19 @@ int main(){
             break;
             }
             case 7: {
-                imenik.sortirajKontakte();
-                imenik.ispisSvihKontakata();
+                /*imenik.sortirajKontakte();
+                imenik.ispisSvihKontakata();*/
+
+
+            std::string ulaznaDatoteka = "imenik.txt";
+            std::string izlaznaDatoteka = "sortirani_imenik.txt";
+
+
+          //  imenik.ucitajIzDatoteke(ulaznaDatoteka);
+
+
+          //  imenik.sortirajKontakteIPisiUDatoteku(izlaznaDatoteka);
+
             }
             case 8: {
                 std::cout << "Unesite ime datoteke za spremanje kontakata: ";
