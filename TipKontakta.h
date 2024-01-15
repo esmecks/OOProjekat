@@ -28,3 +28,4 @@ inline std::ostream& operator<<(std::ostream& os, TipKontakta tip) {
 
 #endif
 
+

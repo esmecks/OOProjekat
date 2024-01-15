@@ -17,6 +17,13 @@ void DodatneInformacije::ispisiInformacije() const {
     std::cout << "E-mail: " << email << std::endl;
     std::cout << "Rodjendan: " << rodjendan << std::endl;
 }
+
+void DodatneInformacije::upisiInformacijeUDatoteku(std::ofstream& datoteka) {
+    datoteka << "E-mail: " << email << std::endl;
+    datoteka << "Rodjendan: " << rodjendan << std::endl;
+}
+
 DodatneInformacije::~DodatneInformacije() {
 
 }
+

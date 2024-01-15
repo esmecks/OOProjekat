@@ -1,4 +1,5 @@
 #include "Imenik.h"
+#include "DodatneInformacije.h"
 #include<iostream>
 #include<vector>
 
@@ -158,11 +159,79 @@ int main(){
             }
             //unos dodatnih
             case 8:{
+                std::string brojTelefona;
+                std::cout << "Unesite broj telefona za pretragu kontakta: ";
+                std::cin >> brojTelefona;
+
+                imenik.ucitajIzDatoteke("imenik.txt");
+                Kontakt nadjeniKontakt = imenik.traziKontakt(brojTelefona);
+                if (nadjeniKontakt.dajBrojTelefona() != "") {
+                    nadjeniKontakt.ispisiKontakt();
+
+                    DodatneInformacije dodatneInformacije;
+                    dodatneInformacije.unosInformacija();
+
+                    std::ofstream datotekaDodatneInformacije("DodatneInformacije.txt", std::ios::app);
+
+                if (datotekaDodatneInformacije.is_open()) {
+                    datotekaDodatneInformacije << "Broj telefona: " << brojTelefona << std::endl;
+                    dodatneInformacije.upisiInformacijeUDatoteku(datotekaDodatneInformacije);
+                    datotekaDodatneInformacije << std::endl;
+
+                    std::cout << "Dodatne informacije su uspješno dodane i sačuvane u DodatneInformacije.txt.\n\n";
+                } else {
+                    std::cerr << "Greška pri otvaranju datoteke DodatneInformacije.txt.\n";
+                   }
+
+                datotekaDodatneInformacije.close();
+                 break;
+                }
+                else {
+                      std::cout << "Kontakt nije pronadjen.\n";
+                }
+                std::cout << "Dodatne informacije su uspješno dodane za kontakt: " << brojTelefona << "\n\n";
+                break;
             }
             //ispis dodatnih
             case 9:{
+                std::string brojTelefona;
+                std::cout << "Unesite broj telefona za ispis dodatnih informacija: ";
+                std::cin >> brojTelefona;
+                std::ifstream datotekaDodatneInformacije("DodatneInformacije.txt");
+                if (datotekaDodatneInformacije.is_open()) {
+                std::string linija;
+                bool pronadjen = false;
+                while (std::getline(datotekaDodatneInformacije, linija)) {
+                    if (linija.find("Broj telefona: " + brojTelefona) != std::string::npos) {
+                        pronadjen = true;
+                        break;
+                    }
+                }
+                datotekaDodatneInformacije.close();
+                if (pronadjen) {
+                    std::ifstream datotekaDodatneInformacije("DodatneInformacije.txt");
+                    std::string sadrzajLinije;
+                while (std::getline(datotekaDodatneInformacije, sadrzajLinije)) {
+                std::string trazeniBrojTelefona = "Broj telefona: " + brojTelefona;
+                   if (sadrzajLinije.compare(0, trazeniBrojTelefona.length()+10, trazeniBrojTelefona) == 0) {
+                       std::cout << sadrzajLinije << std::endl;
+                        std::getline(datotekaDodatneInformacije, sadrzajLinije);
+                        std::cout << sadrzajLinije << std::endl;
+                        std::getline(datotekaDodatneInformacije, sadrzajLinije);
+                        std::cout << sadrzajLinije << std::endl;
+                        std::getline(datotekaDodatneInformacije, sadrzajLinije);
+                       break;
+                   }
+                 }
+               datotekaDodatneInformacije.close();
+               } else {
+                 std::cout << "Dodatne informacije nisu pronadjene za kontakt: " << brojTelefona << "\n\n";
+                 }
+               }else {
+                std::cerr << "Greška pri otvaranju datoteke DodatneInformacije.txt.\n";
+               }
+            break;
             }
-
             //izlaz
             case 10: {
                 std::cout << "Izlaz iz programa.\n";
