@@ -181,5 +181,13 @@ int main(){
         }
     }
 
+    Imenik imenik2;
+
+     if (imenik == imenik2) {
+        std::cout << "Imenici su jednaki." << std::endl;
+    } else {
+        std::cout << "Imenici nisu jednaki." << std::endl;
+    }
+
     return 0;
 }

@@ -26,5 +26,11 @@ class Imenik{
     	void urediKontaktUDatoteci(const std::string& ime, const std::string& prezime, const Kontakt& noviPodaci);
     	void sortirajKontakteIPisiUDatoteku(const std::string& izlaznaDatoteka);
     	void ucitajIzDatoteke(const std::string& datoteka);
+    	class BrojNijePronadjenIznimka : public std::runtime_error {
+    	    public:
+    	        BrojNijePronadjenIznimka(const std::string& poruka)
+    	        : std::runtime_error(poruka) {}
+        };
+        bool operator==(const Imenik& nessta) const;
 };
 #endif

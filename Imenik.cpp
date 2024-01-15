@@ -195,9 +195,15 @@ void Imenik::sortirajKontakteIPisiUDatoteku(const std::string& izlaznaDatoteka) 
 }
 
 void Imenik::obrisiKontakt(const std::string& brojTelefona){
-    kontakti.erase(std::remove_if(kontakti.begin(), kontakti.end(), [brojTelefona](const std::unique_ptr<Kontakt>& kontakt_ptr){
-        return kontakt_ptr->dajBrojTelefona() == brojTelefona; }),
-        kontakti.end());
+    auto it = std::remove_if(kontakti.begin(), kontakti.end(), [brojTelefona](const std::unique_ptr<Kontakt>& kontakt_ptr) {
+        return kontakt_ptr->dajBrojTelefona() == brojTelefona;
+    });
+
+    if (it != kontakti.end()) {
+        kontakti.erase(it, kontakti.end());
+    } else {
+        throw BrojNijePronadjenIznimka("Kontakt nije pronađen.");
+    }
 }
 
 /*void Imenik::sortirajKontakte(){
@@ -388,4 +394,7 @@ void Imenik::ucitajKontakteIzDatoteke(const std::string& imeDatoteke){
     }
 }
 
+bool Imenik::operator==(const Imenik& nessta) const {
+    return kontakti == nessta.kontakti;
+}
 
