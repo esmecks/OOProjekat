@@ -26,6 +26,7 @@ class Imenik{
     	void urediKontaktUDatoteci(const std::string& ime, const std::string& prezime, const Kontakt& noviPodaci);
     	void sortirajKontakteIPisiUDatoteku(const std::string& izlaznaDatoteka);
     	void ucitajIzDatoteke(const std::string& datoteka);
+    	void filtrirajIspisiPoTipu(TipKontakta tip) const;
     	class BrojNijePronadjenIznimka : public std::runtime_error {
     	    public:
     	        BrojNijePronadjenIznimka(const std::string& poruka)

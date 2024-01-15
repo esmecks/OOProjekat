@@ -8,27 +8,50 @@
 #include"Imenik.h"
 #include"TipKontakta.h"
 
+void Imenik::filtrirajIspisiPoTipu(TipKontakta tip) const {
+    for (const auto& kontaktPtr : kontakti) {
+        const Kontakt& kontakt = *kontaktPtr;
+
+        if (kontakt.dajTip() == tip) {
+            std::cout << "Ime: " << kontakt.dajIme() << std::endl;
+            std::cout << "Prezime: " << kontakt.dajPrezime() << std::endl;
+            std::cout << "Broj telefona: " << kontakt.dajBrojTelefona() << std::endl;
+            std::cout << "Adresa: " << kontakt.dajAdresu() << std::endl;
+
+            // Dodatne informacije specifične za svaki tip kontakta
+            if (tip == TipKontakta::Licni) {
+                std::cout << "Tip kontakta: Licni" << std::endl;
+            } else if (tip == TipKontakta::Poslovni) {
+                std::cout << "Tip kontakta: Poslovni" << std::endl;
+            }
+
+            std::cout << std::endl;
+        }
+    }
+}
+
 
 void Imenik::prikaziMeni(){
     std::cout << "-------------------Menu--------------------\n";
-    std::cout << "1. Dodaj kontakt\n";
-    std::cout << "2. Obrisi kontakt\n";
-    std::cout << "3. Pronadji kontakt\n";
-    std::cout << "4. Ispisi sve kontakte\n";
-    std::cout << "5. Uredi kontakt\n";
-    std::cout << "6. Filtriraj kontakte po tipu\n";
-    std::cout << "7. Sortiraj kontakte\n";
-    std::cout << "9. Azuriraj kontakte u datoteci\n";
-    std::cout << "11. Izlaz\n";
+    std::cout << "1. Dodavanje kontakta\n";
+    std::cout << "2. Brisanje kontakata\n";
+    std::cout << "3. Pronalazak kontakta\n";
+    std::cout << "4. Ispis svih kontakata\n";
+    std::cout << "5. Uredjivanje kontakata\n";
+    std::cout << "6. Filtriranje kontakata po tipu\n";
+    std::cout << "7. Sortiranje kontakata\n";
+    std::cout << "8. Unos dodatnih informacija\n";
+    std::cout << "9. Ispis dodatnih informacija\n";
+    std::cout << "10. Izlaz\n\n";
+
     std::cout << "--------------Izaberite opciju?---------------\n";
 }
 
 void Imenik::dodajKontakt(const Kontakt& kontakt){
     std::unique_ptr<Kontakt> noviKontakt = std::make_unique<Kontakt>(kontakt);
     kontakti.push_back(std::move(noviKontakt));
-
-
 }
+
 void Imenik::dodajKontaktUTextDatoteku(const Kontakt& kontakt) {
         std::unique_ptr<Kontakt> noviKontakt = std::make_unique<Kontakt>(kontakt);
         kontakti.push_back(std::move(noviKontakt));
@@ -59,7 +82,7 @@ void Imenik::dodajKontaktUTextDatoteku(const Kontakt& kontakt) {
 
             datoteka << "------------------------------\n";
 
-            // Zatvorite datoteku
+
             datoteka.close();
         } else {
             std::cerr << "Nije moguće otvoriti datoteku za pisanje." << std::endl;
@@ -97,11 +120,10 @@ void Imenik::obrisiKontaktIzDatoteke(const std::string& ime, const std::string& 
             std::cerr << "Kontakt nije pronađen u datoteci." << std::endl;
         }
 
-        // Zatvorite datoteke
         ulaznaDatoteka.close();
         izlaznaDatoteka.close();
 
-        // Zamijenite originalnu datoteku s privremenom datotekom
+        // Zamjena originalne datoteke s privremenom datotekom
         std::remove("imenik.txt");
         std::rename("imenik_temp.txt", "imenik.txt");
 
@@ -119,7 +141,7 @@ void Imenik::ucitajIzDatoteke(const std::string& datoteka) {
         std::string ime, prezime, broj, adresa, tipKontakta;
 
 
-        // Učitavanje imena
+        // Učitavanje podataka iz datoteke
         if (linija.find("Ime: ") != std::string::npos) {
             ime = linija.substr(5);
         }
@@ -334,38 +356,6 @@ std::vector<Kontakt> Imenik::filtrirajKontaktePoTipu(TipKontakta tip) const{
     return filtriraniKontakti;
 }
 
-void Imenik::sacuvajKontakteUDatoteku(const std::string& imeDatoteke){
-    std::ofstream file(imeDatoteke);
-    if(file.is_open()){
-            for (const auto& kontakt : kontakti){
-            file << kontakt->dajIme() << "," << kontakt->dajPrezime() << "," << kontakt->dajBrojTelefona() << "," << kontakt->dajAdresu() << "," << static_cast<int>(kontakt->dajTip()) << "\n";
-        }
-        std::cout << "Kontakti su uspjesno spremljeni u datoteku " << imeDatoteke << std::endl;
-        file.close();
-    }
-    else{
-        std::cout << "Nije moguce otvoriti datoteku za pisanje." << std::endl;
-    }
-}
-
-void Imenik::azurirajDatoteku(const std::string& imeDatoteke){
-    std::ofstream file(imeDatoteke);
-    if(file.is_open()){
-        for(const auto& kontakt_ptr : kontakti){
-            file << kontakt_ptr->dajIme() << ","
-                 << kontakt_ptr->dajPrezime() << ","
-                 << kontakt_ptr->dajBrojTelefona() << ","
-                 << kontakt_ptr->dajAdresu() << ","
-                 << static_cast<int>(kontakt_ptr->dajTip()) << "\n";
-        }
-        std::cout << "Podaci su uspjesno azurirani u datoteci " << imeDatoteke << std::endl;
-        file.close();
-    }
-    else{
-        std::cout << "Nije moguce otvoriti datoteku za pisanje." << std::endl;
-    }
-}
-
 void Imenik::ucitajKontakteIzDatoteke(const std::string& imeDatoteke){
     std::ifstream datoteka(imeDatoteke);
     if (datoteka.is_open()){
@@ -387,7 +377,7 @@ void Imenik::ucitajKontakteIzDatoteke(const std::string& imeDatoteke){
             dodajKontakt(noviKontakt);
         }
         datoteka.close();
-        std::cout << "Kontakti su uspjesno ucitani iz datoteke.\n";
+
     }
     else{
         std::cout << "Nije moguce otvoriti datoteku za citanje.\n";

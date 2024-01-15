@@ -2,6 +2,8 @@
 #include<iostream>
 #include<vector>
 
+
+
 int main(){
 
     Imenik imenik;
@@ -12,6 +14,7 @@ int main(){
         std::cin >> izbor;
 
         switch(izbor){
+            //unos
             case 1: {
                 std::string ime, prezime, brojTelefona, adresa;
                 TipKontakta tip;
@@ -29,32 +32,31 @@ int main(){
                 tip = static_cast<TipKontakta>(tipUnos);
 
                 Kontakt noviKontakt(ime, prezime, brojTelefona, adresa, tip);
-                //imenik.dodajKontakt(noviKontakt);
+
                 imenik.dodajKontaktUTextDatoteku(noviKontakt);
 
                 std::cout << "Kontakt je uspjesno dodan.\n\n";
                 break;
             }
+            //brisanje
             case 2: {
                 std::string brojTelefona,ime,prezime;
-               /* std::cout << "Unesite broj telefona za brisanje kontakta: ";
-                std::cin >> brojTelefona;
-                imenik.obrisiKontakt(brojTelefona);
 
-                break;*/
                 std::cout<<"Unesite ime:";
                 std::cin>>ime;
-                std::cout<<"Unesite ime:";
+                std::cout<<"Unesite prezime:";
                 std::cin>>prezime;
                 imenik.obrisiKontaktIzDatoteke(ime,prezime);
-                std::cout << "Kontakt je uspjesno obrisan.\n\n";
+                //std::cout << "Kontakt je uspjesno obrisan.\n\n";
                 break;
             }
+            //pronalazak kontakta
             case 3: {
                 std::string brojTelefona;
                 std::cout << "Unesite broj telefona za pretragu kontakta: ";
                 std::cin >> brojTelefona;
 
+                imenik.ucitajIzDatoteke("imenik.txt");
                 Kontakt nadjeniKontakt = imenik.traziKontakt(brojTelefona);
                 if (nadjeniKontakt.dajBrojTelefona() != "") {
                 std::cout << "Pronadjen kontakt:\n";
@@ -65,11 +67,13 @@ int main(){
                 }
                 break;
             }
+            //ispis svih
             case 4: {
                 imenik.ispisSvihKontakata("imenik.txt");
                 break;
             }
 
+            //uredjivanje kontakta
             case 5: {
 
                 Imenik imenik;
@@ -127,50 +131,40 @@ int main(){
 
               break;
             }
+            //filtriranje
             case 6: {
                 int tipUnos;
                 std::cout << "Izaberite tip kontakta za filtriranje (0 - Poslovni, 1 - Licni, 2 - Ostalo): ";
                 std::cin >> tipUnos;
 
                 TipKontakta izabraniTip = static_cast<TipKontakta>(tipUnos);
+                Imenik imenik;
+                imenik.ucitajIzDatoteke("imenik.txt");
+                imenik.filtrirajIspisiPoTipu(izabraniTip);
 
-                std::vector<Kontakt> filtriraniKontakti = imenik.filtrirajKontaktePoTipu(izabraniTip);
-                for (const auto& kontakt:filtriraniKontakti) {
-                kontakt.ispisiKontakt();
-                }
+
             break;
             }
+            //sortiranje
             case 7: {
             std::string ulaznaDatoteka = "imenik.txt";
             std::string izlaznaDatoteka = "sortirani_imenik.txt";
             imenik.ucitajIzDatoteke(ulaznaDatoteka);
             imenik.sortirajKontakteIPisiUDatoteku(izlaznaDatoteka);
             std::cout << "Sortirani kontakti su spremljeni u datoteku: "<<izlaznaDatoteka<< std::endl;
+            std::cout << "Sortirani kontakti su: "<<izlaznaDatoteka<< std::endl;
+            imenik.ispisSvihKontakata("sortirani_imenik.txt");
             break;
             }
-            /*case 8: {
-                std::cout << "Unesite ime datoteke za spremanje kontakata: ";
-                std::string imeDatoteke;
-                std::cin >> imeDatoteke;
-                imenik.sacuvajKontakteUDatoteku(imeDatoteke);
-                break;
-             }*/
-            case 9: {
-                std::string imeDatoteke;
-                std::cout << "Unesite ime datoteke za azuriranje: ";
-                std::cin >> imeDatoteke;
-                imenik.azurirajDatoteku(imeDatoteke);
-                std::cout << "Podaci su uspjesno azurirani u datoteci " << imeDatoteke << std::endl;
-                break;
+            //unos dodatnih
+            case 8:{
             }
+            //ispis dodatnih
+            case 9:{
+            }
+
+            //izlaz
             case 10: {
-                std::cout << "Unesite ime datoteke za ucitavanje kontakata: ";
-                std::string imeDatoteke;
-                std::cin >> imeDatoteke;
-                imenik.ucitajKontakteIzDatoteke(imeDatoteke);
-                break;
-            }
-            case 11: {
                 std::cout << "Izlaz iz programa.\n";
                 break;
             }

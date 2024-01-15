@@ -17,7 +17,6 @@ void DodatneInformacije::ispisiInformacije() const {
     std::cout << "E-mail: " << email << std::endl;
     std::cout << "Rodjendan: " << rodjendan << std::endl;
 }
-
 DodatneInformacije::~DodatneInformacije() {
-    // Clean up any resources specific to DodatneInformacije
+
 }
